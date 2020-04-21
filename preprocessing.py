@@ -59,7 +59,8 @@ def detect_flair(url,loaded_model):
     topics_data = topics_data.assign(feature_combine = feature_combine)
     feature=text_extractor(topics_data,'feature_combine')
     x=joiner(preProcessData(feature))
-    return loaded_model.predict(x)
+    flair = submission.link_flair_text
+    return (loaded_model.predict(x), flair)
 
 filename = 'rfr_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
