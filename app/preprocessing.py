@@ -16,6 +16,7 @@ import re
 import pickle
 import praw
 import pprint
+
 nltk.download('punkt')
 nltk.download('stopwords')
 reddit = praw.Reddit(client_id='300HIOocldVcKA', client_secret='PCktLUhpPaRB1RrBCouEDPdpEBU', user_agent='abhishek chopra') # potentially needs configuring, see docs
@@ -59,3 +60,6 @@ def detect_flair(url,loaded_model):
     feature=text_extractor(topics_data,'feature_combine')
     x=joiner(preProcessData(feature))
     return loaded_model.predict(x)
+
+filename = 'rfr_model.sav'
+loaded_model = pickle.load(open(filename, 'rb'))
