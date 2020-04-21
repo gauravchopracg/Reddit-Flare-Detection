@@ -18,7 +18,7 @@ bootstrap = Bootstrap(app)
 
 
 #@app.route('/', methods=['POST'])
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     form = RedditForm()
     if form.validate_on_submit():
