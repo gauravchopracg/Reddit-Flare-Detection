@@ -4,5 +4,5 @@ from wtforms.validators import DataRequired
 
 
 class RedditForm(FlaskForm):
-    url = StringField('URL', validators=[DataRequired()])
-    submit = SubmitField('Sign In')
+    url = StringField('Enter the Reddit URL', validators=[DataRequired()])
+    submit = SubmitField('Submit')
