@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if predicted_flair %}
+    <h2> The predicted flair is: {{ predicted_flair}}!</h2>
+    {% endif %}
+    {% if actual_flair %}
+    <h2> The actual flair is: {{ actual_flair }}!</h2>
+    {% endif %}
+    <h1>Find Flair</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.url.label }}<br>
+            {{ form.url(size=32) }}<br>
+            {% for error in form.url.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
