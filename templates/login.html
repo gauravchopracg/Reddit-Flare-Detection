@@ -3,13 +3,13 @@
 
 {% block app_content %}
     {% if predicted_flair %}
-    <h2> The predicted flair is: {{ predicted_flair}}!</h2>
+    <h2 align="center"> The predicted flair is: {{ predicted_flair}}!</h2>
     {% endif %}
     {% if actual_flair %}
-    <h2> The actual flair is: {{ actual_flair }}!</h2>
+    <h2 align="center"> The actual flair is: {{ actual_flair }}!</h2>
     {% endif %}
-    <h1>Find Flair</h1>
-    <div class="row">
+    <h1 align="center">Find Flair</h1>
+    <div class="row justify-content-center">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>

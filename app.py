@@ -25,10 +25,10 @@ def login():
         url = form.url.data
         actual_flair = 'Politics'#predict(url)
         predicted_flair = 'Policy'#predict(url)
-        flash('Flair for URL requested is {}'.format(predicted_flair))
+        #flash('Flair for URL requested is {}'.format(predicted_flair))
         #return render_template('predict.html', url=url)
-        flash('Login requested for user {}'.format(
-            form.url.data))
+        #flash('Login requested for user {}'.format(
+        #    form.url.data))
         return render_template('login.html',  title=predicted_flair, form=form, actual_flair=actual_flair, predicted_flair=predicted_flair)
         #return redirect(url_for('login'))
     return render_template('login.html',  title='FindFlair', form=form)
