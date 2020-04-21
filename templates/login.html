@@ -2,16 +2,17 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+    <h1 align="center">Welcome to FindFlair</h1>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
     {% if predicted_flair %}
     <h2 align="center"> The predicted flair is: {{ predicted_flair}}!</h2>
     {% endif %}
     {% if actual_flair %}
     <h2 align="center"> The actual flair is: {{ actual_flair }}!</h2>
     {% endif %}
-    <h1 align="center">Find Flair</h1>
-    <div class="row justify-content-center">
-        <div class="col-4">
-            {{ wtf.quick_form(form) }}
-        </div>
-    </div>
+
 {% endblock %}
