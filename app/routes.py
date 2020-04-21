@@ -6,7 +6,7 @@ from app.forms import RedditForm
 
 
 @app.route('/')#, methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/index', methods=['POST'])
 def index():
     form = RedditForm()
     if form.validate_on_submit():
