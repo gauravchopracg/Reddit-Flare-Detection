@@ -13,11 +13,12 @@ from forms import RedditForm
 filename = 'rfr_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 app=Flask(__name__)
+app.config['SECRET_KEY'] = 'you-will-never-guess'
 bootstrap = Bootstrap(app)
 
 
 #@app.route('/', methods=['POST'])
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = RedditForm()
     if form.validate_on_submit():
