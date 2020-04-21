@@ -1,81 +1,81 @@
-import scripts.textcleaning as tc
-from scripts.plot import create_plot
-import pickle
-import logging
-import gensim
-import praw
-from praw.models import MoreComments
-from zipfile import ZipFile 
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Sep  7 23:02:20 2019
 
-# file_name = "model/random_forest_model.bin.zip"
-
-# Use pickle to load in the pre-trained model
-model = pickle.load(open('model/LR.pkl','rb'))
-
-
-reddit = praw.Reddit(client_id = "JTqwrVU0MISDWg",
-					client_secret = "xe06s55FgF5JDSHABI2AsnrX1Q0",
-					user_agent = "reddit_scraper",
-					username = "divyanshuggrwl",
-					password = "wateringplants")
-
-def prediction(url):
-	submission = reddit.submission(url = url)
-	data = {}
-	data["title"] = str(submission.title)
-	data["url"] = str(submission.url)
-	data["body"] = str(submission.selftext)
-
-	submission.comments.replace_more(limit=None)
-	comment = ''
-	count = 0
-	for top_level_comment in submission.comments:
-		comment = comment + ' ' + top_level_comment.body
-		count+=1
-		if(count > 10):
-		 	break
-		
-	data["comment"] = str(comment)
-
-	data['title'] = tc.clean_text(str(data['title']))
-	data['body'] = tc.clean_text(str(data['body']))
-	data['comment'] = tc.clean_text(str(data['comment']))
-    
-	combined_features = data["title"] + data["comment"] + data["body"] + data["url"]
-
-	return model.predict([combined_features])
-
-
-import flask
-import pickle
+@author: Abhishek's PC
+"""
+from flask import Flask, render_template, request
 import pandas as pd
+import nltk
+import numpy as np
+from nltk import word_tokenize
+from nltk.corpus import stopwords
+from string import punctuation
+from collections import Counter
+import re
+import pickle
+import praw
+import pprint
+nltk.download('punkt')
+nltk.download('stopwords')
+reddit = praw.Reddit(client_id='300HIOocldVcKA', client_secret='PCktLUhpPaRB1RrBCouEDPdpEBU', user_agent='abhishek chopra') # potentially needs configuring, see docs
 
+def preProcessData(dataa):
+    stopwords_en = list(set(stopwords.words('english')))
+    def split(word): 
+        return [char for char in word]   
+    punchList = split(punctuation)
 
-# Initialise the Flask app
-app = flask.Flask(__name__, template_folder='templates')
+    wordTokenList = [word_tokenize(sent) for sent in dataa]
+    lowercasingList = [[word.lower() for word in sentence] for sentence in wordTokenList]
+    noStopWordList = [[word for word in sentence if word not in stopwords_en] for sentence in lowercasingList]
+    noPunchList = [[re.sub(r'([^\s\w]|_)+', '', word) for word in sentence] for sentence in noStopWordList]
+    #noPunchList = [[word for word in sentence if word not in punchList] for sentence in noStopWordList]
+    PP_data = [[word for word in sentence if word] for sentence in noPunchList]
+    return PP_data
 
-# Set up the main route
-@app.route('/', methods=['GET', 'POST'])
-def main():
-    if flask.request.method == 'GET':
-        # Just render the initial form, to get input
-        return(flask.render_template('main.html'))
+def text_extractor(text,text_type):
+    title_list=[]
+    for i in range(len(text)):
+        title_list.append(text[text_type][i])
+    return title_list
+def joiner(data):
+    input_corrected = [" ".join(i) for i in data]
+    return input_corrected
+def detect_flair(url,loaded_model):
+
+    submission = reddit.submission(url=url)
+    topics_dict = {"title":[], "comments":[]}
+    topics_dict["title"].append(submission.title)
+    submission.comments.replace_more(limit=None)
+    comment = ''
+    for top_level_comment in submission.comments:
+        comment = comment + ' ' + top_level_comment.body
+    topics_dict["comments"].append(comment)
     
-    if flask.request.method == 'POST':
-        # Extract the input
-        text = flask.request.form['url']
-        
-        # Get the model's prediction
-        flair = prediction(str(text))
-    
-        # Render the form again, but add in the prediction and remind user
-        # of the values they input before
-        return flask.render_template('main.html', original_input={'url':str(text)}, result=flair,)
-@app.route("/stats")
-def stats():
-	bar = create_plot()
-	return flask.render_template('graph.html',plot=bar)
+    topics_data = pd.DataFrame(topics_dict)
+    feature_combine = topics_data["title"] + topics_data["comments"]
+    topics_data = topics_data.assign(feature_combine = feature_combine)
+    feature=text_extractor(topics_data,'feature_combine')
+    x=joiner(preProcessData(feature))
+    return loaded_model.predict(x)
 
+filename = 'rfr_model.sav'
+loaded_model = pickle.load(open(filename, 'rb'))
+app=Flask(__name__)
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-if __name__ == '__main__':
+@app.route("/success", methods=['POST'])
+def success():
+     if request.method=='POST':
+        link=request.form["email_name"]
+        a=detect_flair(link,loaded_model)
+        str_a=str(a[0])
+        print(str_a)
+        return render_template("success.html",str_a= str_a,link=link)
+if __name__=='__main__':
+    app.debug=True
     app.run()
+
