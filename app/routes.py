@@ -2,6 +2,7 @@ from flask import render_template, request, jsonify
 from app import app
 from preprocessing import *
 from app.forms import RedditForm
+from werkzeug.utils import secure_filename
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -30,6 +31,7 @@ def test():
     if request.method == 'POST':
         file = request.files['file']
         if file:
+            filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r+')
             urls = [line.rstrip('\n') for line in f.readlines()]
