@@ -5,12 +5,15 @@ Created on Sat Sep  7 23:02:20 2019
 @author: Abhishek's PC
 """
 from flask import Flask, render_template, request
+from flask_bootstrap import Bootstrap
 import pickle
 from preprocessing import *
 
 filename = 'rfr_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 app=Flask(__name__)
+bootstrap = Bootstrap(app)
+
 @app.route("/")
 def index():
     return render_template("index.html")
