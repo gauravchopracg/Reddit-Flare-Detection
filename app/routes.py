@@ -24,7 +24,7 @@ def index():
 
 # automated testing endpoint
 # this endpoint will be used for testing performance of the classifier
-@app.route('/testing', methods=["POST"])
+@app.route('/testing', methods=['GET', 'POST'])
 def test():
     json = {}
     if request.method == 'POST':
