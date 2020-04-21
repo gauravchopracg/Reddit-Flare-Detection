@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request, jsonify
 from app import app
 from preprocessing import *
 from app.forms import RedditForm
@@ -21,3 +21,24 @@ def index():
         return render_template('login.html',  title=predicted_flair, form=form, actual_flair=actual_flair, predicted_flair=predicted_flair)
         #return redirect(url_for('login'))
     return render_template('login.html',  title='FindFlair', form=form)
+
+# automated testing endpoint
+# this endpoint will be used for testing performance of the classifier
+@app.route('/testing', methods=["POST"])
+def test():
+    json = {}
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r+')
+            urls = [line.rstrip('\n') for line in f.readlines()]
+            f.close()
+            for url in urls:
+                a, _ =detect_flair(url,loaded_model)
+                predicted_flair=str(a[0])
+                json[url] = predicted_flair
+
+    return jsonify(json)
+
+
