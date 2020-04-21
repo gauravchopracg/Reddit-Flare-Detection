@@ -23,8 +23,10 @@ def login():
     form = RedditForm()
     if form.validate_on_submit():
         url = form.url.data
+        a=detect_flair(url,loaded_model)
+        predicted_flair=str(a[0])
         actual_flair = 'Politics'#predict(url)
-        predicted_flair = 'Policy'#predict(url)
+        #predicted_flair = 'Policy'#predict(url)
         #flash('Flair for URL requested is {}'.format(predicted_flair))
         #return render_template('predict.html', url=url)
         #flash('Login requested for user {}'.format(
