@@ -17,9 +17,9 @@ app.config['SECRET_KEY'] = 'you-will-never-guess'
 bootstrap = Bootstrap(app)
 
 
-#@app.route('/', methods=['POST'])
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
+def index():
     form = RedditForm()
     if form.validate_on_submit():
         url = form.url.data
@@ -36,9 +36,9 @@ def login():
     return render_template('login.html',  title='FindFlair', form=form)
 
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+#@app.route("/")
+#def index():
+#    return render_template("index.html")
 
 @app.route("/success", methods=['POST'])
 def success():
