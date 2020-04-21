@@ -5,7 +5,7 @@ from app.forms import RedditForm
 
 
 
-@app.route('/')#, methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 @app.route('/index', methods=['POST'])
 def index():
     form = RedditForm()
