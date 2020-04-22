@@ -3,6 +3,7 @@ from app import app
 from preprocessing import *
 from app.forms import RedditForm
 from werkzeug.utils import secure_filename
+import os
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -41,7 +42,8 @@ def test():
                 predicted_flair=str(a[0])
                 json[url] = predicted_flair
 
-    return jsonify(json)
+            return jsonify(json)
+    return "Error in file upload"
 
 @app.route('/text-example', methods=['GET', 'POST']) #GET requests will be blocked
 def text_example():
@@ -53,4 +55,4 @@ def text_example():
             f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r+')
             urls = [line.rstrip('\n') for line in f.readlines()]
             return jsonify(urls)#redirect(url_for('index'))
-    return "File not uploaded"
+    return "Error in file upload"
