@@ -36,7 +36,7 @@ def test():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r+')
             urls = [line.rstrip('\n') for line in f.readlines()]
-            f.close()
+            #f.close()
             for url in urls:
                 a, _ =detect_flair(url,loaded_model)
                 predicted_flair=str(a[0])
