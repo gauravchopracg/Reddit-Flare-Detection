@@ -2,8 +2,8 @@ import praw
 import pandas as pd
 import re
 import nltk
-nltk.download("wordnet", quiet=True)
-nltk.download("stopwords", quiet=True)
+#nltk.download("wordnet", quiet=True)
+#nltk.download("stopwords", quiet=True)
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import pickle
