@@ -53,11 +53,15 @@ def test():
 @app.route('/text-example', methods=['GET', 'POST']) #GET requests will be blocked
 def text_example():
     if request.method == 'POST':
-        file = request.files['file']
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r+')
-            urls = [line.rstrip('\n') for line in f.readlines()]
+        for i in request.files:
+            urls = file.read()
+            urls = urls.decode("utf-8").split("\n")
+            urls = [i.replace("\r","") for i in urls]
+#        file = request.files['file']
+#        if file:
+#            filename = secure_filename(file.filename)
+#            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#            f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r+')
+#            urls = [line.rstrip('\n') for line in f.readlines()]
             return jsonify(urls)#redirect(url_for('index'))
     return "Error in file upload"
