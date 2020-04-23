@@ -54,6 +54,7 @@ def test():
 def text_example():
     if request.method == 'POST':
         for i in request.files:
+            file = request.files[i]
             urls = file.read()
             urls = urls.decode("utf-8").split("\n")
             urls = [i.replace("\r","") for i in urls]
