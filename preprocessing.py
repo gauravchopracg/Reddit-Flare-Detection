@@ -17,8 +17,8 @@ import pickle
 import praw
 import pprint
 
-nltk.download('punkt')
-nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('stopwords')
 reddit = praw.Reddit(client_id='300HIOocldVcKA', client_secret='PCktLUhpPaRB1RrBCouEDPdpEBU', user_agent='abhishek chopra') # potentially needs configuring, see docs
 
 def preProcessData(dataa):
