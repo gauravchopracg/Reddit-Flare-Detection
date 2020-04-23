@@ -1,1 +1,1 @@
-web: gunicorn rdf:app --timeout 60
+web: gunicorn rdf:app --timeout 600
