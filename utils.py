@@ -40,15 +40,15 @@ def get_posts(urls):
             flair = post.link_flair_text
         
         comments =  ''
-        post.comments.replace_more(limit=0)
+#        post.comments.replace_more(limit=0)
         # limiting the total comments to 20
-        max_comment = 20
-        i = 0
-        for comment in post.comments.list():
-            comments = comment.body + " "
-            i = i+1
-            if(i > max_comment):
-                break
+#        max_comment = 20
+#        i = 0
+#        for comment in post.comments.list():
+#            comments = comment.body + " "
+#            i = i+1
+#            if(i > max_comment):
+#                break
         topics["comments"].append(comments)
     
     # Creating a dataframe for all the values
