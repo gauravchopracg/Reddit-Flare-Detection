@@ -11,8 +11,9 @@ import os
 def index():
     form = RedditForm()
     if form.validate_on_submit():
-        url = form.url.data
-        res, flair = process(list(url))
+        path = form.url.data
+        path = [path]
+        res, flair = process(list(path))
 #        a, b =detect_flair(url,loaded_model)
         predicted_flair=res[path[0]]#str(a[0])
         actual_flair = flair#b#predict(url)
@@ -37,7 +38,7 @@ def test():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r+')
             urls = [line.rstrip('\n') for line in f.readlines()]
-            res = process[urls]
+            res = process(urls)
             json = res[0]
 
             #f.close()
