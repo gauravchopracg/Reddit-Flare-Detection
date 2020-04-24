@@ -31,7 +31,7 @@ def index():
 # this endpoint will be used for testing performance of the classifier
 @app.route('/testing', methods=['GET', 'POST'])
 def test():
-    #json = {}
+    json = {}
     if request.method == 'POST':
         for i in request.files:
             file = request.files[i]
